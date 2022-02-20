@@ -2,5 +2,3 @@ Base path: 'C:/Users/USER/Desktop/2020.3.4f1/Editor/Data', plugins path 'C:/User
 Cmd: initializeCompiler
 
 Cmd: shutdown
-
-Quitting shader compiler process

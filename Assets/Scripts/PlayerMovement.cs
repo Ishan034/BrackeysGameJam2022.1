@@ -5,56 +5,39 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float turnSmoothTime;
-    [SerializeField] private Transform playerCamera;
-    [SerializeField] private float gravity = -9.81f;
-    [SerializeField] private float checkRadius = 0.2f;
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float jumpForce;
+    [SerializeField] private float turnSmoothTime = 0.2f;
+    [SerializeField] private Transform cameraTransform;
 
-    private CharacterController characterController;
     private float turnSmoothVelocity;
-    private Vector3 velocity;
 
-    private void Awake()
+    private void FixedUpdate()
     {
-        characterController = GetComponent<CharacterController>();
-    }
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
-    void Update()
-    {
-        bool isGrounded = Physics.CheckSphere(groundCheck.position, checkRadius, groundLayer);
+        float targetAngle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-        if (isGrounded && velocity.y < 0)
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+        if (Input.GetKey(KeyCode.W))
         {
-            velocity.y = -2f;
+            transform.Translate(0f, 0f, vertical * moveSpeed * Time.deltaTime);
         }
 
-        float horizontalAxis = Input.GetAxis("Horizontal");
-        float verticalAxis = Input.GetAxis("Vertical");
-
-        Vector3 direction = new Vector3(horizontalAxis, 0f, verticalAxis).normalized;
-
-        if (direction.magnitude >= 0.1f)
+        if (Input.GetKey(KeyCode.S))
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-
-            characterController.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
+            transform.Translate(0f, 0f, -vertical * moveSpeed * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKey(KeyCode.A))
         {
-            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+            transform.Translate(0f, 0f, -horizontal * moveSpeed * Time.deltaTime);
         }
 
-        velocity.y += gravity * Time.deltaTime;
-
-        characterController.Move(velocity * Time.deltaTime);
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.Translate(0f, 0f, horizontal * moveSpeed * Time.deltaTime);
+        }
     }
 }

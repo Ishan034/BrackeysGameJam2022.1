@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        //would Play the soundtrack when it is added
+        PlaySound("Background");
     }
 
     public void PlaySound(string name)

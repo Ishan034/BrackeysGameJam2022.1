@@ -50,3 +50,9 @@ MonoBehaviour:
     pitch: 1.5
     loop: 0
     audioSource: {fileID: 0}
+  - name: Background
+    clip: {fileID: 8300000, guid: 00de85099b15e9446974b9ec762b949d, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 1
+    audioSource: {fileID: 0}

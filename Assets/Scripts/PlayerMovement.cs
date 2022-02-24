@@ -6,12 +6,15 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float turnSmoothTime = 0.2f;
+    [SerializeField] private float verticalSpeed;
     [SerializeField] private Transform cameraTransform;
 
     private float turnSmoothVelocity;
 
     private void FixedUpdate()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -38,6 +41,16 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             transform.Translate(0f, 0f, horizontal * moveSpeed * Time.deltaTime);
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            transform.Translate(0f, verticalSpeed * Time.deltaTime, 0f);
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            transform.Translate(0f, -verticalSpeed * Time.deltaTime, 0f);
         }
     }
 }

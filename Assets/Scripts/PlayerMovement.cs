@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
